@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    direction: rtl;
+}
+@layer base {
+    @font-face {
+        font-family: "IRAN";
+        font-style: normal;
+        font-weight: 400;
+        src: url("../../public/fonts/IRAN.woff") format("woff");
+    }
+}

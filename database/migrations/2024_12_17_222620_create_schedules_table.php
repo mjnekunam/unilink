@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,12 +14,9 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->default(Auth::id());
+            $table->enum('frequency', ['none', 'weekly', 'custom']);
             $table->string('title');
-            $table->string('frequency');
-            $table->text('dates');
-            $table->text('custom')->nullable();
-            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Schedule;
+use App\Models\Appointment;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -23,7 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'avatar',
     ];
 
     /**
@@ -49,13 +52,35 @@ class User extends Authenticatable
         ];
     }
 
-    protected function students(): Attribute
+    public function schedules(): HasMany
     {
-        return Attribute::get(fn() => $this->where('role', 'student')->get());
+        return $this->hasMany(Schedule::class);
     }
 
-    protected function professors(): Attribute
+    public function appointments(): HasMany
     {
-        return Attribute::get(fn() => $this->where('role', 'professor')->get());
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function students()
+    {
+        return $this->where('role', 'student')->get()->map(function (User $user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'avatar' => $user->avatar,
+            ];
+        });
+    }
+
+    public function teachers()
+    {
+        return $this->where('role', 'teacher')->get()->map(function (User $user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'avatar' => $user->avatar,
+            ];
+        });
     }
 }

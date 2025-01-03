@@ -7,5 +7,6 @@
         },
         "types": ["vue3-toastify/global"]
     },
-    "exclude": ["node_modules", "public"]
+    "exclude": ["node_modules", "public"],
+    "allowSyntheticDefaultImports": true
 }

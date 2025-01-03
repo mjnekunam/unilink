@@ -230,6 +230,7 @@ function formattedDate(holiday) {
 // Optimized highlight function with memorization
 const highlight = (formatted, dateMoment) => {
     let attributes = {};
+    attributes["class"] = "text-black";
 
     const dateFormat = dateMoment.format("jM/jD");
     const matchingDescriptions = highlightedDates.value.flatMap((item) => {
@@ -244,7 +245,6 @@ const highlight = (formatted, dateMoment) => {
         attributes["title"] = matchingDescriptions.join(" - ");
         attributes["class"] = "text-red-600";
     }
-
     if (dateMoment.format("ddd") === "جمعه") {
         attributes["title"] = attributes["title"]
             ? `${attributes["title"]} - تعطیل`
@@ -277,6 +277,7 @@ function onChange(date) {
         @prev-month="onChange"
         :initial-value="initialValue"
         :min="min"
+        class="text-black"
     >
         <!-- slot for "now-btn" -->
         <template #now-btn="{ vm, color, goToday, lang }">

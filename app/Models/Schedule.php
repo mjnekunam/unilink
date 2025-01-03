@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Appointment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Schedule extends Model
 {
@@ -14,21 +17,21 @@ class Schedule extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'dates',
-        'rrule',
-        'frequency',
-        'custom',
+        'frequency'
     ];
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+
+    public function user(): BelongsTo
     {
-        return [
-            'dates' => 'json',
-            'custom' => 'json',
-        ];
+        return $this->belongsTo(User::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function dates(): HasMany
+    {
+        return $this->hasMany(ScheduleDate::class);
     }
 }

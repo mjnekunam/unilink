@@ -11,6 +11,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "morilog/jalali": "^3.4",
+        "rlanvin/php-rrule": "^2.5",
         "symfony/css-selector": "^7.1",
         "symfony/dom-crawler": "^7.1",
         "tightenco/ziggy": "^2.0"

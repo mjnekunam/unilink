@@ -101,9 +101,7 @@ const calendarOptions = {
       text: "منو",
       click: function () {
         emit("toggleMenu");
-        setTimeout(() => {
-          calendar.value.updateSize();
-        }, 300);
+        setTimeout(() => calendar.value.updateSize(), 300);
       },
     },
     refresh: {

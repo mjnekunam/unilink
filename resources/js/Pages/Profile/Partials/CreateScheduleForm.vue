@@ -654,7 +654,7 @@ const createSchedule = () => {
       ? { ...data.custom, endDate: "never" }
       : data.custom,
   }));
-  form.post(route("calendar.store"), {
+  form.post(route("schedule.store"), {
     preserveScroll: true,
     onSuccess: () => [closeModal(), toast.success("اطلاعات با موفقیت ثبت شد")],
     onError: () => [updateId(), toast.error(errorMessage.common)],

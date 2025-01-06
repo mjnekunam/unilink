@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', [UserController::class, 'home'])->name('home');
@@ -14,9 +14,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         # Calendar
-        Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
-        Route::post('/calendar', [CalendarController::class, 'store'])->name('calendar.store');
-        Route::delete('/calendar', [CalendarController::class, 'destroy'])->name('schedule.destroy');
+        Route::get('/calendar', [ScheduleController::class, 'index'])->name('calendar');
+        Route::post('/calendar', [ScheduleController::class, 'store'])->name('schedule.store');
+        Route::delete('/calendar', [ScheduleController::class, 'destroy'])->name('schedule.destroy');
 
         # Appointments
         Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');

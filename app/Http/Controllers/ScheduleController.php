@@ -16,7 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ScheduleStoreRequest;
 
-class CalendarController extends Controller
+class ScheduleController extends Controller
 {
     public function index(User $user, Request $request)
     {

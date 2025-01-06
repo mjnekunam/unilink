@@ -21,18 +21,23 @@ class ScheduleController extends Controller
     public function index(User $user, Request $request)
     {
         $role = Auth::user()->role;
-        if ($role === 'teacher') {
-            return Inertia::render('Teacher/Calendar', [
-                'students' => fn() => $user->students(),
-                'events' => fn() => $this->mergeEvents($this->scheduleEvents(), $this->appointmentEvents($role)),
-                'schedules' => fn() => $this->schedules(), // schedules from DB for ScheduleForm when submitting a new form
-            ]);
-        } else if ($role === 'student') {
-            return Inertia::render('Student/Calendar', [
-                'teachers' => fn() => $user->teachers(),
-                'events' => fn() => $this->mergeEvents($this->scheduleEvents($request->id), $this->appointmentEvents($role)),
-            ]);
+        switch ($role) {
+            case 'teacher':
+                $props = [
+                    'students' => fn() => $user->students(),
+                    'events' => fn() => $this->mergeEvents($this->scheduleEvents(), $this->appointmentEvents($role)),
+                    'schedules' => fn() => $this->schedules(), // schedules from DB for ScheduleForm when submitting a new form
+                ];
+                break;
+            case 'student':
+                $props = [
+                    'teachers' => fn() => $user->teachers(),
+                    'events' => fn() => $this->mergeEvents($this->scheduleEvents($request->id), $this->appointmentEvents($role)),
+                ];
+                break;
         }
+
+        return Inertia::render(ucfirst($role) . '/Calendar', $props);
     }
 
     public function store(ScheduleStoreRequest $request): RedirectResponse

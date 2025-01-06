@@ -12,16 +12,13 @@ class DashboardController extends Controller
     public function index(User $user)
     {
         $role = Auth::user()->role;
-
+        $props = [];
         if ($role === 'teacher') {
-            return Inertia::render(
-                "Teacher/Dashboard",
+            $props =
                 [
                     'students' => fn() => $user->students(),
-                ]
-            );
-        } else if ($role === 'student') {
-            return Inertia::render('Student/Dashboard');
+                ];
         }
+        return Inertia::render(ucfirst($role) . '/Dashboard', $props);
     }
 }

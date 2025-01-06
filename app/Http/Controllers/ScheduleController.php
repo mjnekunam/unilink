@@ -16,7 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ScheduleStoreRequest;
 
-class CalendarController extends Controller
+class ScheduleController extends Controller
 {
     public function index(User $user, Request $request)
     {
@@ -134,18 +134,21 @@ class CalendarController extends Controller
 
     private function appointmentEvents($role)
     {
-        if ($role === 'student') {
-            $appointments = Appointment::where("student_id", Auth::id())
-                ->with(['schedule_date:id,schedule_id'])
-                ->get();
-        } else if ($role === 'teacher') {
-            $appointments = Appointment::where("teacher_id", Auth::id())
-                ->where('status', 'approved')
-                ->with(['schedule_date:id,schedule_id'])
-                ->get();
+        switch ($role) {
+            case 'student':
+                $appointments = Appointment::where("student_id", Auth::id())
+                    ->with(['schedule_date:id,schedule_id'])
+                    ->get();
+                $otherRole = 'teacher';
+                break;
+            case 'teacher':
+                $appointments = Appointment::where("teacher_id", Auth::id())
+                    ->where('status', 'approved')
+                    ->with(['schedule_date:id,schedule_id'])
+                    ->get();
+                $otherRole = 'student';
+                break;
         }
-
-        $otherRole = $role === 'teacher' ? 'student' : 'teacher';
         $appointmentEvents = $appointments->isEmpty() ? collect() : $appointments->map(function (Appointment $appointment) use ($otherRole) {
             return [
                 'id' => $appointment->id,

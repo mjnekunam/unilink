@@ -94,8 +94,8 @@ class AppointmentController extends Controller
                 'date' => $appointment->date,
                 'startTime' => substr($appointment->start_time, 0, 5),
                 'endTime' => substr($appointment->end_time, 0, 5),
-                'extendedProps' => [
-                    'status' => $appointment->status,
+                'status' => $appointment->status,
+                $otherRole => [
                     'name' => $appointment->{$otherRole}->name,
                     'avatar' => $appointment->{$otherRole}->avatar,
                 ]

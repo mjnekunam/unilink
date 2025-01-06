@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-        # Calendar
+        # Schedules
         Route::get('/calendar', [ScheduleController::class, 'index'])->name('calendar');
         Route::post('/calendar', [ScheduleController::class, 'store'])->name('schedule.store');
         Route::delete('/calendar', [ScheduleController::class, 'destroy'])->name('schedule.destroy');
@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
         # Appointments
         Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');
         Route::post('/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
-        Route::patch('/appointment', [AppointmentController::class, 'update'])->name('appointment.update');
+        Route::patch('/appointment', [AppointmentController::class, 'upwdate'])->name('appointment.update');
         Route::delete('/appointment', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
     });
 });

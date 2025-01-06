@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\AppointmentStoreRequest;
 use App\Http\Requests\AppointmentUpdateRequest;
 
 class AppointmentController extends Controller
@@ -35,12 +34,14 @@ class AppointmentController extends Controller
         DB::transaction(function () use ($validated) {
             $appointments = Appointment::whereIn('id', $validated['id'])->get();
             Appointment::whereIn('id', $validated['id'])->update(['status' => 'approved']);
+            //TODO: send notification to student when "teacher" approves an appointment
             foreach ($appointments as $appointment) {
-                Appointment::where('date', $appointment->date)
+                $appointment = Appointment::where('date', $appointment->date)
                     ->where('start_time', $appointment->start_time)
                     ->where('end_time', $appointment->end_time)
                     ->where('status', 'pending')
                     ->delete();
+                //TODO: send notification to student when "teacher" deletes an appointment
             }
         });
 
@@ -50,7 +51,7 @@ class AppointmentController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Appointment::whereIn('id', $request->id)->delete();
-        //TODO: send notification to student when teacher deletes an appointment
+        //TODO: send notification to student when "teacher" deletes an appointment
         return Redirect::route('appointment');
     }
 
@@ -70,24 +71,31 @@ class AppointmentController extends Controller
 
     private function appointments($userRole)
     {
-        if ($userRole === 'student') {
-            $appointments = Appointment::where("{$userRole}_id", Auth::id())
-                ->with(["{$userRole}:id,name,avatar", 'schedule_date:id,rrule'])
-                ->get();
-        } else if ($userRole === 'teacher') {
-            $appointments = Appointment::where("{$userRole}_id", Auth::id())->where('status', 'pending')
-                ->with(["{$userRole}:id,name,avatar", 'schedule_date:id,rrule'])
-                ->get();
+        switch ($userRole) {
+            case 'student':
+                $appointments = Appointment::where("student_id", Auth::id())
+                    ->with(["student:id,name,avatar", 'schedule_date:id,rrule'])
+                    ->get();
+                $otherRole = 'teacher';
+                break;
+            case 'teacher':
+                $appointments = Appointment::where("teacher_id", Auth::id())->where('status', 'pending')
+                    ->with(["teacher:id,name,avatar", 'schedule_date:id,rrule'])
+                    ->get();
+                $otherRole = 'student';
+                break;
+            default:
+                $appointments = collect();
+                break;
         }
-        $otherRole = $userRole === 'teacher' ? 'student' : 'teacher';
         $result = $appointments->map(function ($appointment) use ($otherRole) {
             return [
                 'id' => $appointment->id,
                 'date' => $appointment->date,
                 'startTime' => substr($appointment->start_time, 0, 5),
                 'endTime' => substr($appointment->end_time, 0, 5),
-                'status' => $appointment->status,
-                $otherRole => [
+                'extendedProps' => [
+                    'status' => $appointment->status,
                     'name' => $appointment->{$otherRole}->name,
                     'avatar' => $appointment->{$otherRole}->avatar,
                 ]

@@ -6,9 +6,6 @@ import { Head } from "@inertiajs/vue3";
 <template>
   <Head title="داشبورد" />
   <StudentLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-white">داشبورد</h2>
-    </template>
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">

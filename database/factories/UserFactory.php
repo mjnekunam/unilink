@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,7 +30,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => $this->faker->randomElement(['student', 'teacher']),
-            'avatar' => Vite::asset('public/storage/random_avatars/' . rand(1, 21) . '.png'),
+            'avatar' => asset('storage/random_avatars/' . rand(1, 21) . '.png'),
         ];
     }
 

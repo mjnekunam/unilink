@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->default(Auth::id());
+            $table->foreignId('user_id')->constrained();
             $table->enum('frequency', ['none', 'weekly', 'custom']);
             $table->string('title');
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import { debounce } from "lodash";
 import { toast } from "vue3-toastify";
 import { datetime, RRule, RRuleSet, rrulestr } from "rrule";
+import Editor from "@/Components/Editor.vue";
 
 const props = defineProps({
   schedules: {
@@ -209,6 +210,7 @@ function initializeForm(frequency) {
 
 const form = useForm({
   title: "",
+  description: "",
   frequency: computed(() => (!menu.value ? "none" : menu.value.value)),
   dates: setDefault("dates"),
   custom: setDefault("custom"),
@@ -681,6 +683,7 @@ const closeModal = () => {
     <Modal :show="confirmingScheduleCreation" @close="closeModal">
       <div class="p-5">
         <div class="mb-3">
+          <label class="text-neutral block mb-2">عنوان :</label>
           <TextInput
             id="title"
             v-model="form.title"
@@ -691,6 +694,10 @@ const closeModal = () => {
             placeholder="افزودن عنوان"
           />
           <InputError :message="form.errors.title" class="mt-1" />
+        </div>
+        <div class="my-4">
+          <label class="text-neutral block mb-2">توضیحات :</label>
+          <Editor v-model="form.description" />
         </div>
         <div class="flex">
           <ClockIcon class="text-gray-800 size-5 me-3" />

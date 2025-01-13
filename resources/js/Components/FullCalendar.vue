@@ -53,10 +53,8 @@ const processEvent = (info) => {
       }
       break;
     case "teacher":
-      if (info.event.extendedProps.status === "approved") {
-        selected.value = info.event.extendedProps;
-        showInformation();
-      }
+      selected.value = info.event.extendedProps;
+      showInformation();
       break;
   }
 };
@@ -201,6 +199,7 @@ watch(
   </Modal>
 
   <Modal :show="showInformationModal" @close="showInformationModal = false">
+    <pre dir="ltr">{{ selected }}</pre>
     <div class="flex items-center m-6 gap-5">
       <div class="avatar">
         <div class="w-16 rounded-full">

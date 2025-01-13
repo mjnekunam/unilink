@@ -26,6 +26,7 @@ const props = defineProps({
 });
 const confirmingScheduleCreation = ref(false);
 const menu = ref(null);
+
 const options = [
   {
     value: "none",
@@ -373,7 +374,6 @@ watch(
     deep: true,
   }
 );
-
 function hasMoreActiveDates(date) {
   return form.dates.filter((d) => !d.disabled).length > 1 ||
     date.times.length > 1
@@ -681,9 +681,9 @@ const closeModal = () => {
       <PlusIcon class="size-7" />
     </PrimaryButton>
     <Modal :show="confirmingScheduleCreation" @close="closeModal">
-      <div class="p-5">
+      <div class="p-5" data-theme="light">
         <div class="mb-3">
-          <label class="text-neutral block mb-2">عنوان :</label>
+          <label for="title" class="text-neutral block mb-2">عنوان :</label>
           <TextInput
             id="title"
             v-model="form.title"
@@ -697,7 +697,7 @@ const closeModal = () => {
         </div>
         <div class="my-4">
           <label class="text-neutral block mb-2">توضیحات :</label>
-          <Editor v-model="form.description" />
+          <Editor v-model:content="form.description" />
         </div>
         <div class="flex">
           <ClockIcon class="text-gray-800 size-5 me-3" />

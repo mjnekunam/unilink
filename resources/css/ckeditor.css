@@ -1,0 +1,15 @@
+.main-container {
+  font-family: "IRAN";
+}
+
+.ck-content {
+  font-family: "IRAN";
+  line-height: 1.6;
+  word-break: break-word;
+}
+.ck-content ol {
+  padding-right: 1em;
+}
+.ck-content ul {
+  padding-right: 1.5em;
+}

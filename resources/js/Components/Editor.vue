@@ -1,27 +1,7 @@
-<template>
-  <div class="main-container">
-    <div
-      class="editor-container editor-container_classic-editor editor-container_include-block-toolbar"
-      ref="editorContainerElement"
-    >
-      <div class="editor-container__editor">
-        <div ref="editorElement">
-          <ckeditor
-            v-if="editor && config"
-            :modelValue="config.initialData"
-            :editor="editor"
-            :config="config"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { Ckeditor } from "@ckeditor/ckeditor5-vue";
-
+import "@/../css/ckeditor.css";
 import {
   ClassicEditor,
   Autoformat,
@@ -62,16 +42,27 @@ import {
   TodoList,
   Underline,
 } from "ckeditor5";
-
 import "ckeditor5/ckeditor5.css";
+
+const props = defineProps({
+  content: {
+    type: String,
+  },
+});
+
+const emit = defineEmits(["update:content"]);
+
+const localData = ref(props.content);
+
+watch(localData, (newValue) => {
+  emit("update:content", newValue);
+});
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
  */
 const LICENSE_KEY = "GPL"; // or <YOUR_LICENSE_KEY>.
-
 const isLayoutReady = ref(false);
-
 const editor = ClassicEditor;
 
 const config = computed(() => {
@@ -248,3 +239,23 @@ onMounted(() => {
   isLayoutReady.value = true;
 });
 </script>
+
+<template>
+  <div class="main-container">
+    <div
+      class="editor-container editor-container_classic-editor editor-container_include-block-toolbar"
+      ref="editorContainerElement"
+    >
+      <div class="editor-container__editor">
+        <div ref="editorElement">
+          <ckeditor
+            v-if="editor && config"
+            :editor="editor"
+            :config="config"
+            v-model="localData"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

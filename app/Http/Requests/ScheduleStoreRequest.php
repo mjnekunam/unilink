@@ -24,6 +24,7 @@ class ScheduleStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
+            'description' => 'string|max:1000',
             'frequency' => 'string',
             'description' => 'nullable|string|max:1000',
             'custom.interval' => ['required', 'integer', 'between:1,52'],
@@ -40,6 +41,7 @@ class ScheduleStoreRequest extends FormRequest
     {
         return [
             'title.required' => 'لطفا عنوان را پر کنید.',
+            'description.max' => 'حداکثر تعداد کاراکتر برای توضیحات ۱۰۰۰ کاراکتر است.',
             'dates.*.times.*.start.required' => 'لطفا ساعت شروع را پر کنید.',
             'dates.*.times.*.end.required' => 'لطفا ساعت پایان را پر کنید.',
             'dates.*.times.*.start.regex' => 'قالب ساعت درست نیست.',

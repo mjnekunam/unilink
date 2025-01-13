@@ -59,6 +59,7 @@ class ScheduleController extends Controller
             $schedule = Schedule::create([
                 'user_id' => Auth::id(),
                 'title' => $input['title'],
+                'description' => $input['description'],
                 'frequency' => $input['frequency']
             ]);
 
@@ -113,6 +114,10 @@ class ScheduleController extends Controller
                         'title' => $schedule->title,
                         'start' => $date->date . 'T' . $date->start_time,
                         'end' => $date->date . 'T' . $date->end_time,
+                        'extendedProps' => [
+                            'status' => 'open',
+                            'description' => $schedule->description,
+                        ],
                     ];
                 } else if ($schedule->frequency !== 'none') {
                     $start = new DateTime($date->start_time);
@@ -126,6 +131,7 @@ class ScheduleController extends Controller
                         'duration' => $duration,
                         'extendedProps' => [
                             'status' => 'open',
+                            'description' => $schedule->description,
                         ],
                     ];
                 }
@@ -166,6 +172,7 @@ class ScheduleController extends Controller
                     'status' => $appointment->status,
                     'name' => $appointment->{$otherRole}->name,
                     'avatar' => $appointment->{$otherRole}->avatar,
+                    'description' => $appointment->schedule_date->schedule->description
                 ],
             ];
         });

@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
         # Appointments
         Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');
         Route::post('/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
-        Route::patch('/appointment', [AppointmentController::class, 'upwdate'])->name('appointment.update');
+        Route::patch('/appointment', [AppointmentController::class, 'update'])->name('appointment.update');
         Route::delete('/appointment', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
     });
 });
@@ -31,12 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-// Testing the holidayCrawler
-// ---------------------------
-// Route::get('/crawl-holidays', function (HolidayCrawler $crawler) {
-//     // $holidays = $crawler->fetchHolidays();
-//     // return response()->json($holidays);
-// });
 
 require __DIR__ . '/auth.php';

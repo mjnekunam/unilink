@@ -15,6 +15,7 @@ import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { toast } from "vue3-toastify";
+import Editor from "@/Components/Editor.vue";
 
 const props = defineProps({
   events: {
@@ -40,6 +41,17 @@ const form = useForm({
   endTime: "",
   dateId: "",
 });
+
+const status = ($status) => {
+  switch ($status) {
+    case "open":
+      return "آزاد";
+    case "approved":
+      return "پر شده";
+    case "pending":
+      return "در انتظار تایید";
+  }
+};
 
 const processEvent = (info) => {
   switch (role) {
@@ -199,14 +211,32 @@ watch(
   </Modal>
 
   <Modal :show="showInformationModal" @close="showInformationModal = false">
-    <pre dir="ltr">{{ selected }}</pre>
-    <div class="flex items-center m-6 gap-5">
-      <div class="avatar">
-        <div class="w-16 rounded-full">
-          <img :src="selected.avatar" alt="avatar" />
+    <section class="m-6" data-theme="light">
+      <section v-if="selected.status === 'approved'">
+        <div class="flex items-center gap-5">
+          <div class="avatar">
+            <div class="w-16 rounded-full">
+              <img :src="selected.avatar" alt="avatar" />
+            </div>
+          </div>
+          <p class="ml-3 text-neutral">{{ selected.name }}</p>
         </div>
-      </div>
-      <p class="ml-3 text-neutral">{{ selected.name }}</p>
-    </div>
+      </section>
+
+      <section v-else-if="selected.status === 'open'">
+        <section v-if="role === 'teacher'">
+          <div class="flex flex-col gap-3">
+            <div class="flex gap-4">
+              <p>وضعیت زمان‌بندی :</p>
+              <strong>{{ status(selected.status) }}</strong>
+            </div>
+            <div v-if="selected.description" class="flex flex-col gap-2">
+              <p>توضیحات :</p>
+              <Editor v-model:content="selected.description" :disabled="true" />
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
   </Modal>
 </template>

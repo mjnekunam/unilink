@@ -48,6 +48,10 @@ const props = defineProps({
   content: {
     type: String,
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:content"]);
@@ -252,6 +256,7 @@ onMounted(() => {
             v-if="editor && config"
             :editor="editor"
             :config="config"
+            :disabled="props.disabled"
             v-model="localData"
           />
         </div>
